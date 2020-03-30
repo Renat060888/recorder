@@ -32,6 +32,7 @@ private:
 
     virtual bpo::options_description getArgumentsDescrTemplateMethodPart() override;
     virtual void checkArgumentsTemplateMethodPart( const bpo::variables_map & _varMap ) override;
+
     virtual void version() override;
     virtual void about() override;
 

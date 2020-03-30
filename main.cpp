@@ -178,7 +178,7 @@ int main( int argc, char ** argv, char ** env ){
 
     VS_LOG_INFO << endl;
     VS_LOG_INFO << endl;
-    VS_LOG_INFO << "============================ PLAYER PROCESS RETURNS '0' ============================" << endl;
+    VS_LOG_INFO << "============================ RECORDER PROCESS RETURNS '0' ============================" << endl;
     return 0;
 }
 

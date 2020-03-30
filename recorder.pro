@@ -12,7 +12,7 @@ QMAKE_CXXFLAGS += -Wno-unused-variable
 
 # TODO: add defines to logger, system monitor, restbed webserver, database, etc...
 DEFINES += \
-    SWITCH_LOGGER_ASTRA \
+    SWITCH_LOGGER_SIMPLE \
 
 # NOTE: paths for dev environment ( all projects sources in one dir )
 INCLUDEPATH += \
@@ -30,10 +30,15 @@ LIBS += \
     -lboost_filesystem \
     -lboost_program_options \ # TODO: wtf?
     -ljsoncpp \
-    -lmosquitto \
-    -lunilog \  # TODO: wtf?
-    -lobjrepr \  # TODO: wtf?
+    -lmosquitto \ 
     -lmicroservice_common \
+
+contains( DEFINES, OBJREPR_LIBRARY_EXIST ){
+    message("connect 'unilog' and 'objrepr' libraries")
+LIBS += \
+    -lunilog \
+    -lobjrepr
+}
 
 SOURCES += main.cpp \
     communication/commands/cmd_context_close.cpp \
