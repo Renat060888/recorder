@@ -9,10 +9,11 @@ CONFIG -= qt
 
 QMAKE_CXXFLAGS += -Wno-unused-parameter
 QMAKE_CXXFLAGS += -Wno-unused-variable
-
+q
 # TODO: add defines to logger, system monitor, restbed webserver, database, etc...
 DEFINES += \
     SWITCH_LOGGER_SIMPLE \
+#    OBJREPR_LIBRARY_EXIST \
 
 # NOTE: paths for dev environment ( all projects sources in one dir )
 INCLUDEPATH += \
@@ -47,13 +48,17 @@ SOURCES += main.cpp \
     communication/commands/cmd_user_ping.cpp \
     communication/commands/cmd_user_register.cpp \
     communication/command_factory.cpp \
+    datasource/mirror_object_listener_objrepr.cpp \
+    datasource/object_listener_imitator.cpp \
+    datasource/object_listener_mqtt.cpp \
+    datasource/object_listener_objrepr.cpp \
+    recorder_controller.cpp \
     storage/database_manager.cpp \
     storage/storage_engine_facade.cpp \
     system/args_parser.cpp \
     system/config_reader.cpp \
     system/path_locator.cpp \
-    recorder_agent.cpp \
-    storage/recorder_controller.cpp \
+    recorder_agent.cpp \    
     communication/communication_gateway_facade_recorder.cpp \
     communication/unified_command_convertor_recorder.cpp \
     storage/context.cpp \
@@ -68,6 +73,11 @@ HEADERS += \
     communication/commands/cmd_user_ping.h \
     communication/commands/cmd_user_register.h \
     communication/command_factory.h \
+    datasource/mirror_object_listener_objrepr.h \
+    datasource/object_listener_imitator.h \
+    datasource/object_listener_mqtt.h \
+    datasource/object_listener_objrepr.h \
+    recorder_controller.h \
     storage/database_manager.h \
     storage/storage_engine_facade.h \
     system/args_parser.h \
@@ -76,8 +86,7 @@ HEADERS += \
     common/common_types.h \
     common/common_utils.h \
     common/common_vars.h \
-    recorder_agent.h \
-    storage/recorder_controller.h \
+    recorder_agent.h \    
     communication/communication_gateway_facade_recorder.h \
     communication/unified_command_convertor_recorder.h \
     analyze/dummy.h \

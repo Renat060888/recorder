@@ -161,6 +161,7 @@ public:
 
     virtual void addObserver( IListenedObjectObserver * _observer ) = 0;
     virtual void removeObserver( IListenedObjectObserver * _observer ) = 0;
+    virtual void runListenCycle() = 0;
 };
 
 

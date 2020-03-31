@@ -1,15 +1,17 @@
 
+#ifdef OBJREPR_LIBRARY_EXIST
 #include <objrepr/reprServer.h>
+#endif
+
 #include <microservice_common/system/logger.h>
 
 #include "system/config_reader.h"
 #include "source_manager_facade.h"
 
-
 using namespace std;
 using namespace common_types;
 
-static constexpr const char * PRINT_HEADER = "SourceMgr:";
+static constexpr const char * PRINT_HEADER = "SourceManagerFacade:";
 
 SourceManagerFacade::SourceManagerFacade()
 {
@@ -25,19 +27,19 @@ bool SourceManagerFacade::init( const SInitSettings & _settings ){
     mqttSettings.login = CONFIG_PARAMS.COMMUNICATION_MQTT_LOGIN;
     mqttSettings.password = CONFIG_PARAMS.COMMUNICATION_MQTT_PASS;
     mqttSettings.routeMode = MqttClient::convertRouteModeFromStr( CONFIG_PARAMS.COMMUNICATION_MQTT_ROUTE_MODE );
+    mqttSettings.internalCallbacksThread = false;
     if( ! m_mqttClient.init(mqttSettings) ){
         return false;
     }
 
     m_mqttClient.addObserver( this );
-
     m_mqttClient.subscribe( 373, 0 );
 
     //
 
 
 
-
+    VS_LOG_INFO << PRINT_HEADER << " init success" << endl;
     return true;
 }
 
@@ -55,7 +57,7 @@ void SourceManagerFacade::mqttClientEvent( const innotransfer::Package & package
         traj.objId = package.motiondata.id;
         traj.latDeg = package.motiondata.y;
         traj.lonDeg = package.motiondata.x;
-
+#ifdef OBJREPR_LIBRARY_EXIST
         objrepr::Orientation orient;
         orient.setQuaternion( package.motiondata.i,
                               package.motiondata.j,
@@ -64,6 +66,7 @@ void SourceManagerFacade::mqttClientEvent( const innotransfer::Package & package
                               objrepr::GeoCoord(package.motiondata.x, package.motiondata.y, package.motiondata.z),
                               4876 );
         traj.yawDeg = orient.yaw();
+#endif
 
         for( IListenedObjectObserver * observer : m_listenedObjectsObservers ){
             observer->callbackObjectDetected( traj );
@@ -92,32 +95,10 @@ void SourceManagerFacade::mqttClientBatchEvent( const innotransfer::BatchPackage
     // TODO: do ?
 }
 
-void SourceManagerFacade::addObserver( common_types::IListenedObjectObserver * _observer ){
 
-    for( const IListenedObjectObserver * const observer : m_listenedObjectsObservers ){
-        if( observer == _observer ){
-            return;
-        }
-    }
-
-    m_listenedObjectsObservers.push_back( _observer );
-}
-
-void SourceManagerFacade::removeObserver( common_types::IListenedObjectObserver * _observer ){
-
-    for( auto iter = m_listenedObjectsObservers.begin(); iter != m_listenedObjectsObservers.end(); ){
-        if( (* iter) == _observer ){
-            iter = m_listenedObjectsObservers.erase( iter );
-            return;
-        }
-        else{
-            ++iter;
-        }
-    }
-}
 
 common_types::IServiceObjectListener * SourceManagerFacade::getServiceOfObjectListener(){
-    return this;
+    return m_listeningService;
 }
 
 

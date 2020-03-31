@@ -6,7 +6,7 @@
 using namespace std;
 using namespace common_types;
 
-static constexpr const char * PRINT_HEADER = "StorageEngine:";
+static constexpr const char * PRINT_HEADER = "StorageEngineFacade:";
 
 StorageEngineFacade::StorageEngineFacade()
     : m_trMaintenance(nullptr)
@@ -25,8 +25,14 @@ bool StorageEngineFacade::init( const SInitSettings & _settings ){
     _settings.services.serviceObjectListener->addObserver( this );
 
 
+
+
+
+
+
     m_trMaintenance = new std::thread( & StorageEngineFacade::threadMaintenance, this );
 
+    VS_LOG_INFO << PRINT_HEADER << " init success" << endl;
     return true;
 }
 

@@ -1,7 +1,7 @@
 #ifndef RECORDER_CONTROLLER_H
 #define RECORDER_CONTROLLER_H
 
-// TODO: do ?
+#include "datasource/object_listener_objrepr.h"
 
 class RecorderController
 {
@@ -19,7 +19,7 @@ public:
 
 private:
 
-
+    ObjectListenerObjrepr m_worker;
 
 
 };

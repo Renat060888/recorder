@@ -4,8 +4,7 @@
 #include "common/common_types.h"
 #include "mqtt_client.h"
 
-class SourceManagerFacade : public common_types::IServiceObjectListener,
-                            public MqttClient::IObserver
+class SourceManagerFacade : public MqttClient::IObserver
 {
 public:
     struct SServiceLocator {
@@ -29,9 +28,6 @@ private:
     virtual void mqttClientEvent( const innotransfer::Package & package, MqttClient::EPackageType type ) override;
     virtual void mqttClientBatchEvent( const innotransfer::BatchPackage & package, MqttClient::EPackageType type ) override;
 
-    virtual void addObserver( common_types::IListenedObjectObserver * _observer ) override;
-    virtual void removeObserver( common_types::IListenedObjectObserver * _observer ) override;
-
 
 
 
@@ -41,7 +37,7 @@ private:
 
     // service
     MqttClient m_mqttClient;
-
+    common_types::IServiceObjectListener * m_listeningService;
 };
 
 #endif // SOURCE_MANAGER_H
