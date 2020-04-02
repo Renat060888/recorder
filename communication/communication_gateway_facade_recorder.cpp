@@ -84,20 +84,20 @@ common_types::IServiceInternalCommunication * CommunicationGatewayFacadeRecorder
     return this;
 }
 
-PNetworkClient CommunicationGatewayFacadeRecorder::getPlayerWorkerCommunicator( const std::string & _uniqueId ){
+PNetworkClient CommunicationGatewayFacadeRecorder::getRecorderWorkerCommunicator( const std::string & _uniqueId ){
 
     auto iter = m_playerWorkerCommunicatorsById.find( _uniqueId );
     if( iter != m_playerWorkerCommunicatorsById.end() ){
         return iter->second;
     }
 
-    // core -> node agent
+    // recorder agent -> recorder controller ( worker )
     SAmqpRouteParameters route;
-    route.predatorExchangePointName = "dss_dx_core";
-    route.predatorQueueName = "dss_q_core_mailbox";
-    route.predatorRoutingKeyName = "dss_rk_to_core";
-    route.targetExchangePointName = "dss_dx_player_workers";
-    route.targetRoutingKeyName = "dss_rk_to_player_worker_" + _uniqueId;
+    route.predatorExchangePointName = "dss_dx_recorder";
+    route.predatorQueueName = "dss_q_recorder_mailbox";
+    route.predatorRoutingKeyName = "dss_rk_to_recorder";
+    route.targetExchangePointName = "dss_dx_recorder_workers";
+    route.targetRoutingKeyName = "dss_rk_to_recorder_worker_" + _uniqueId;
 
     PNetworkClient connection = CommunicationGatewayFacade::getInitialAmqpConnection();
     PAmqpClient amqpClient = std::dynamic_pointer_cast<AmqpClient>( connection );

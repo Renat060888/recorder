@@ -42,16 +42,16 @@ LIBS += \
 }
 
 SOURCES += main.cpp \
-    communication/commands/cmd_context_close.cpp \
-    communication/commands/cmd_context_open.cpp \
+    communication/commands/cmd_context_listen_start.cpp \
+    communication/commands/cmd_context_listen_stop.cpp \
     communication/commands/cmd_player_controller_ping.cpp \
     communication/commands/cmd_user_ping.cpp \
     communication/commands/cmd_user_register.cpp \
     communication/command_factory.cpp \
-    datasource/mirror_object_listener_objrepr.cpp \
     datasource/object_listener_imitator.cpp \
     datasource/object_listener_mqtt.cpp \
     datasource/object_listener_objrepr.cpp \
+    datasource/proxy_object_listener_objrepr.cpp \
     recorder_controller.cpp \
     storage/database_manager.cpp \
     storage/storage_engine_facade.cpp \
@@ -67,16 +67,16 @@ SOURCES += main.cpp \
     datasource/source_manager_facade.cpp
 
 HEADERS += \
-    communication/commands/cmd_context_close.h \
-    communication/commands/cmd_context_open.h \
+    communication/commands/cmd_context_listen_start.h \
+    communication/commands/cmd_context_listen_stop.h \
     communication/commands/cmd_player_controller_ping.h \
     communication/commands/cmd_user_ping.h \
     communication/commands/cmd_user_register.h \
     communication/command_factory.h \
-    datasource/mirror_object_listener_objrepr.h \
     datasource/object_listener_imitator.h \
     datasource/object_listener_mqtt.h \
     datasource/object_listener_objrepr.h \
+    datasource/proxy_object_listener_objrepr.h \
     recorder_controller.h \
     storage/database_manager.h \
     storage/storage_engine_facade.h \

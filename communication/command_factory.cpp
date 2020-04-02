@@ -9,8 +9,8 @@
 #include "command_factory.h"
 #include "commands/cmd_user_ping.h"
 #include "commands/cmd_user_register.h"
-#include "commands/cmd_context_open.h"
-#include "commands/cmd_context_close.h"
+#include "commands/cmd_context_listen_start.h"
+#include "commands/cmd_context_listen_stop.h"
 #include "common/common_vars.h"
 
 using namespace std;
@@ -61,15 +61,14 @@ PCommand CommandFactory::createCommand( PEnvironmentRequest _request ){
             cmd1->m_userPid = parsedJson.get<common_types::TPid>(common_vars::cmd::USER_PID);
             cmd = cmd1;
         }
-        else if( "context_open" == parsedJson.get<string>(common_vars::cmd::COMMAND_NAME) ){
-            PCommandContextOpen cmd1 = std::make_shared<CommandContextOpen>( & m_commandServices );
-            cmd1->m_userId = parsedJson.get<string>(common_vars::cmd::USER_ID);
+        else if( "context_listen_start" == parsedJson.get<string>(common_vars::cmd::COMMAND_NAME) ){
+            PCommandContextListenStart cmd1 = std::make_shared<CommandContextListenStart>( & m_commandServices );
             cmd1->m_contextName = parsedJson.get<string>(common_vars::cmd::CONTEXT_NAME);
             cmd = cmd1;
         }
-        else if( "context_close" == parsedJson.get<string>(common_vars::cmd::COMMAND_NAME) ){
-            PCommandContextClose cmd1 = std::make_shared<CommandContextClose>( & m_commandServices );
-            cmd1->m_userId = parsedJson.get<string>(common_vars::cmd::USER_ID);
+        else if( "context_listen_stop" == parsedJson.get<string>(common_vars::cmd::COMMAND_NAME) ){
+            PCommandContextListenStop cmd1 = std::make_shared<CommandContextListenStop>( & m_commandServices );
+            cmd1->m_contextName = parsedJson.get<string>(common_vars::cmd::CONTEXT_NAME);
             cmd = cmd1;
         }
         else{

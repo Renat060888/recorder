@@ -120,7 +120,7 @@ class IServiceInternalCommunication {
 public:
     virtual ~IServiceInternalCommunication(){}
 
-    virtual PNetworkClient getPlayerWorkerCommunicator( const std::string & _uniqueId ) = 0;
+    virtual PNetworkClient getRecorderWorkerCommunicator( const std::string & _uniqueId ) = 0;
 };
 
 class IServiceExternalCommunication {
@@ -148,6 +148,7 @@ public:
 //
 
 
+// source area
 class IListenedObjectObserver {
 public:
     virtual ~IListenedObjectObserver(){}
@@ -162,6 +163,7 @@ public:
     virtual void addObserver( IListenedObjectObserver * _observer ) = 0;
     virtual void removeObserver( IListenedObjectObserver * _observer ) = 0;
     virtual void runListenCycle() = 0;
+    virtual TContextId getListenedContextId() = 0;
 };
 
 

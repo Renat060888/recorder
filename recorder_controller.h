@@ -7,7 +7,7 @@ class RecorderController
 {
 public:
     struct SInitSettings {
-
+        common_types::TContextId ctxId;
     };
 
     RecorderController();

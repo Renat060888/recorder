@@ -5,22 +5,21 @@
 
 #include "common/common_types.h"
 
-class CommandContextOpen : public ICommandExternal
+class CommandContextListenStart : public ICommandExternal
 {
     friend class CommandFactory;
 public:
-    CommandContextOpen( common_types::SIncomingCommandServices * _services );
+    CommandContextListenStart( common_types::SIncomingCommandServices * _services );
 
     virtual bool exec() override;
 
 
-private:
-    common_types::TUserId m_userId;
+private:    
     std::string m_contextName;
 
 
 
 };
-using PCommandContextOpen = std::shared_ptr<CommandContextOpen>;
+using PCommandContextListenStart = std::shared_ptr<CommandContextListenStart>;
 
 #endif // CMD_CONTEXT_OPEN_H

@@ -35,7 +35,7 @@ private:
     virtual bool initDerive( const SIninSettings & _settings ) override;
     virtual bool parse( const std::string & _content ) override;
     virtual bool createCommandsFromConfig( const std::string & _content ) override;
-    virtual void printToStdoutConfigExampleDerive() override;
+    virtual std::string getConfigExampleDerive() override;
 
 
     // data

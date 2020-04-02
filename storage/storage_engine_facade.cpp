@@ -17,7 +17,7 @@ StorageEngineFacade::StorageEngineFacade()
 
 StorageEngineFacade::~StorageEngineFacade()
 {
-
+    shutdown();
 }
 
 bool StorageEngineFacade::init( const SInitSettings & _settings ){
@@ -38,8 +38,15 @@ bool StorageEngineFacade::init( const SInitSettings & _settings ){
 
 void StorageEngineFacade::shutdown(){
 
+    if( ! m_shutdownCalled ){
+        m_shutdownCalled = true;
+
+        VS_LOG_INFO << PRINT_HEADER << " begin shutdown" << endl;
 
 
+
+        VS_LOG_INFO << PRINT_HEADER << " shutdown success" << endl;
+    }
 }
 
 void StorageEngineFacade::threadMaintenance(){

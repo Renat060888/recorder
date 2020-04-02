@@ -5,20 +5,20 @@
 
 #include "common/common_types.h"
 
-class CommandContextClose : public ICommandExternal
+class CommandContextListenStop : public ICommandExternal
 {
     friend class CommandFactory;
 public:
-    CommandContextClose( common_types::SIncomingCommandServices * _services );
+    CommandContextListenStop( common_types::SIncomingCommandServices * _services );
 
     virtual bool exec() override;
 
 
 private:
-    common_types::TUserId m_userId;
+    std::string m_contextName;
 
 
 };
-using PCommandContextClose = std::shared_ptr<CommandContextClose>;
+using PCommandContextListenStop = std::shared_ptr<CommandContextListenStop>;
 
 #endif // CMD_CONTEXT_CLOSE_H

@@ -19,7 +19,7 @@ static bool initSingletons( int _argc, char ** _argv, char ** _env ){
     ArgsParser::SInitSettings settings;
     settings.argc = _argc;
     settings.argv = _argv;
-    settings.printConfigExample = std::bind( & AConfigReader::printToStdoutConfigExample, & CONFIG_READER );
+    settings.printConfigExample = std::bind( & AConfigReader::getConfigExample, & CONFIG_READER );
     settings.commandConvertor = & UNIFIED_COMMAND_CONVERTOR;
     if( ! ARGS_PARSER.init(settings) ){
         return false;
@@ -99,9 +99,9 @@ static bool executeShellCommand(){
             Logger::singleton().initGlobal( settings2 );
 
             VS_LOG_INFO << "============================ RECORDER AGENT AS DAEMON ========================" << endl;
-        }
+        }        
 
-        // launch
+        // launch agent
         {
             RecorderAgent::SInitSettings settings;
             RecorderAgent agent;
@@ -115,7 +115,7 @@ static bool executeShellCommand(){
     }
     if( ! ARGS_PARSER.getVal(EPlayerArguments::SHELL_COMMAND_START_RECORDER_CONTROLLER).empty() ){
 
-        // launch
+        // launch controller
         {
             RecorderController::SInitSettings settings;
             RecorderController controller;

@@ -25,7 +25,7 @@ public:
 
 private:
     // internal
-    virtual PNetworkClient getPlayerWorkerCommunicator( const std::string & _uniqueId ) override;
+    virtual PNetworkClient getRecorderWorkerCommunicator( const std::string & _uniqueId ) override;
 
     // external
     virtual PNetworkClient getUserCommunicator( const std::string & _uniqueId ) override;
