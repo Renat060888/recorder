@@ -1,4 +1,10 @@
 
+#define RUN_TESTS
+
+#ifdef RUN_TESTS
+#include <microservice_common/unit_tests/storage_tests.h>
+#endif
+
 #include <boost/property_tree/json_parser.hpp>
 #include <microservice_common/system/logger.h>
 #include <microservice_common/system/daemonizator.h>
@@ -164,7 +170,7 @@ int main( int argc, char ** argv, char ** env ){
         return -1;
     }
 
-#if 1
+#ifndef RUN_TESTS
     VS_LOG_INFO << endl;
     VS_LOG_INFO << endl;
     if( ! executeShellCommand() ){
@@ -172,8 +178,8 @@ int main( int argc, char ** argv, char ** env ){
         return -1;
     }
 #else
-    UnitTests tests;
-    tests.run();
+    StorageTests storageTests;
+    storageTests.runTests();
 #endif
 
     VS_LOG_INFO << endl;

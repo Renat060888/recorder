@@ -1,14 +1,21 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
 
-#include "database_manager.h"
+#include <microservice_common/storage/database_manager_base.h>
+
+#include "common/common_types.h"
 
 class Context : public common_types::IListenedObjectVisitor
 {
 public:
+    struct SInitSettings {
+        common_types::TContextId ctxId;
+        common_types::TSessionNum currentSessionNum;
+    };
+
     Context();
 
-
+    bool init( const SInitSettings & _settings );
     void runSystemClock();
 
 
@@ -18,14 +25,15 @@ private:
 
 
     // data
+    SInitSettings m_settings;
     int64_t m_lastDumpAtMillisec;
-    std::vector<common_types::SListenedTrajectory> m_accumulatedTrajObjects;
     int32_t m_trajObjectsCounter;
-    std::vector<common_types::SListenedWeather> m_accumulatedWeatherObjects;
     int32_t m_weatherObjectsCounter;
+    std::vector<common_types::SListenedTrajectory> m_accumulatedTrajObjects;
+    std::vector<common_types::SListenedWeather> m_accumulatedWeatherObjects;
 
     // service
-    DatabaseManager * m_database;
+    DatabaseManagerBase * m_database;
 
 
 

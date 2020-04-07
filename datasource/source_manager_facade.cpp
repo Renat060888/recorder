@@ -31,7 +31,7 @@ SourceManagerFacade::~SourceManagerFacade()
 
 bool SourceManagerFacade::init( const SInitSettings & _settings ){
 
-
+    // I'm begins to programming...
 
 
 

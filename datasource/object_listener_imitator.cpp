@@ -40,6 +40,16 @@ void ObjectListenerImitator::runListenCycle(){
 
                 // ...
                 VS_LOG_INFO << "step num: " << m_currentStepNum << endl;
+
+                for( SListenedTrajectory & obj : m_objectImitations ){
+                    // change obj state
+
+                    // notify
+                    for( IListenedObjectObserver * observer : m_listenedObjectsObservers ){
+                        observer->callbackObjectDetected( obj );
+                    }
+                }
+
             }
         }
         else{
