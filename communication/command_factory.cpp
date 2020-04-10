@@ -1,7 +1,4 @@
 
-#include <jsoncpp/json/reader.h>
-#include <jsoncpp/json/writer.h>
-
 #include <boost/property_tree/json_parser.hpp>
 #include <microservice_common/system/logger.h>
 #include <microservice_common/common/ms_common_utils.h>
@@ -97,14 +94,14 @@ PCommand CommandFactory::createCommand( PEnvironmentRequest _request ){
 
 void CommandFactory::sendFailToExternal( PEnvironmentRequest _request, const string _msg ){
 
-    Json::Value root;
+    boost::property_tree::ptree root;
+    root.add( "response", "fail" );
+    root.add( "body", _msg );
 
-    root["response"] = "fail";
-    root["body"] = _msg;
+    ostringstream oss;
+    boost::property_tree::json_parser::write_json( oss, root );
 
-    Json::FastWriter writer;
-
-    _request->setOutcomingMessage( writer.write( root ) );
+    _request->setOutcomingMessage( oss.str() );
 }
 
 

@@ -16,6 +16,7 @@ public:
 private:
     void sendFailToExternal( PEnvironmentRequest _request, const std::string _msg );
 
+    // service
     common_types::SIncomingCommandServices & m_commandServices;
 };
 

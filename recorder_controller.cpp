@@ -12,6 +12,14 @@ bool RecorderController::init( const SInitSettings & _settings ){
 
 }
 
+void RecorderController::callbackNetworkRequest( PEnvironmentRequest _request ){
+
+
+
+
+
+}
+
 void RecorderController::launch(){
 
 

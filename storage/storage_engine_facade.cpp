@@ -1,6 +1,7 @@
 
 #include <microservice_common/system/logger.h>
 
+#include "system/config_reader.h"
 #include "storage_engine_facade.h"
 
 using namespace std;
@@ -91,10 +92,16 @@ void StorageEngineFacade::callbackObjectDetected( const common_types::SListenedO
     }
     else{
         // create context
-        PContext ctx = std::make_shared<Context>();
+        Context::SInitSettings settings;
+        settings.ctxId = _obj.ctxId;
+        settings.missionId = _obj.missionId;
+        settings.updateIntervalMilllisec = CONFIG_PARAMS.RECORDING_QUANTUM_TIME_MILLISEC;
 
-        m_contexts.push_back( ctx );
-        m_contextById.insert( {_obj.ctxId, ctx} );
+        PContext ctx = std::make_shared<Context>();
+        if( ctx->init( settings ) ){
+            m_contexts.push_back( ctx );
+            m_contextById.insert( {_obj.ctxId, ctx} );
+        }
 
         _obj.accept( (IListenedObjectVisitor *)ctx.get() );
     }

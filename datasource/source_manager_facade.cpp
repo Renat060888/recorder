@@ -31,7 +31,7 @@ SourceManagerFacade::~SourceManagerFacade()
 
 bool SourceManagerFacade::init( const SInitSettings & _settings ){
 
-    // I'm begins to programming...
+
 
 
 
@@ -66,7 +66,7 @@ void SourceManagerFacade::threadMaintenance(){
     while( ! m_shutdownCalled ){
 
         m_muListeners.lock();
-        for( IServiceObjectListener * listener : m_listeningServices ){
+        for( IObjectListeningService * listener : m_listeningServices ){
             listener->runListenCycle();
         }
         m_muListeners.unlock();
@@ -97,7 +97,7 @@ bool SourceManagerFacade::startListenContext( const std::string & _ctxName ){
         return false;
     }
 
-    ((IServiceObjectListener *)listener)->addObserver( this );
+    ((IObjectListeningService *)listener)->addObserver( this );
 
     m_muListeners.lock();
     m_listeningServices.push_back( listener );
@@ -113,7 +113,7 @@ void SourceManagerFacade::stopListenContext( const std::string & _ctxName ){
 
     m_muListeners.lock();
     for( auto iter = m_listeningServices.begin(); iter != m_listeningServices.end(); ){
-        IServiceObjectListener * listener = ( * iter );
+        IObjectListeningService * listener = ( * iter );
         if( listener->getListenedContextId() == contextId ){
             delete listener;
             m_listeningServices.erase( iter );
@@ -126,33 +126,35 @@ void SourceManagerFacade::stopListenContext( const std::string & _ctxName ){
     m_muListeners.unlock();
 }
 
-common_types::IServiceObjectListener * SourceManagerFacade::getServiceOfObjectListener(){
+common_types::IObjectListeningService * SourceManagerFacade::getServiceOfObjectListener(){
     return this;
 }
 
 // observer interface
 void SourceManagerFacade::callbackObjectDetected( const common_types::SListenedObject & _obj ){
 
-    // forward event to real consumer
-    for( IListenedObjectObserver * observer : m_listenedObjectsObservers ){
+    // forward event to real consumer(s)
+    for( IObjectListeningObserver * observer : m_listenedObjectsObservers ){
         observer->callbackObjectDetected( _obj );
     }
 }
 
 // listen service interface
 void SourceManagerFacade::runListenCycle(){
-
     assert( false && "dummy method" );
 }
 
 common_types::TContextId SourceManagerFacade::getListenedContextId(){
-
     assert( false && "dummy method" );
 }
 
-void SourceManagerFacade::addObserver( common_types::IListenedObjectObserver * _observer ){
+common_types::TMissionId SourceManagerFacade::getListenedMissionId(){
+    assert( false && "dummy method" );
+}
 
-    for( const IListenedObjectObserver * const observer : m_listenedObjectsObservers ){
+void SourceManagerFacade::addObserver( common_types::IObjectListeningObserver * _observer ){
+
+    for( const IObjectListeningObserver * const observer : m_listenedObjectsObservers ){
         if( observer == _observer ){
             return;
         }
@@ -161,7 +163,7 @@ void SourceManagerFacade::addObserver( common_types::IListenedObjectObserver * _
     m_listenedObjectsObservers.push_back( _observer );
 }
 
-void SourceManagerFacade::removeObserver( common_types::IListenedObjectObserver * _observer ){
+void SourceManagerFacade::removeObserver( common_types::IObjectListeningObserver * _observer ){
 
     for( auto iter = m_listenedObjectsObservers.begin(); iter != m_listenedObjectsObservers.end(); ){
         if( (* iter) == _observer ){

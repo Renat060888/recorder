@@ -87,14 +87,14 @@ bool RecorderAgent::init( const SInitSettings & _settings ){
         return false;
     }
 
-    // CTRL+C handler
+    // "CTRL + C" handler
+    common_utils::connectInterruptSignalHandler( (common_utils::TSignalHandlerFunction) & RecorderAgent::callbackUnixInterruptSignal );
     m_unixInterruptSignal.connect( boost::bind( & RecorderAgent::shutdownByUnixInterruptSignal, this) );
-    common_utils::connectInterruptSignalHandler( ( common_utils::TSignalHandlerFunction ) & RecorderAgent::callbackUnixInterruptSignal );
 
     checkForSelfShutdown();
 
-    // NOTE: если инициализация прошла успешно, то история прерванных операций окончательно очищается,
-    // а их возобновление начнется с выборкой команд в DistributedSimulationSystem::launch()
+    // NOTE: if initialize successfully done, then the history of interrupted operations is completely cleared,
+    // and their renewal will be started with a command fetch in the RecorderAgent::launch()
     m_systemEnvironment->serviceForWriteAheadLogging()->cleanJournal();
 
     VS_LOG_INFO << PRINT_HEADER << " ============================ INIT SUCCESS ============================" << endl;

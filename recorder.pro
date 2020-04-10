@@ -14,6 +14,7 @@ q
 DEFINES += \
     SWITCH_LOGGER_SIMPLE \
 #    OBJREPR_LIBRARY_EXIST \
+#    RUN_UNIT_TESTS \
 
 # NOTE: paths for dev environment ( all projects sources in one dir )
 INCLUDEPATH += \

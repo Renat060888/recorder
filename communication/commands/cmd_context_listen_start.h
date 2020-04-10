@@ -16,6 +16,7 @@ public:
 
 private:    
     std::string m_contextName;
+    std::string m_missionName;
 
 
 

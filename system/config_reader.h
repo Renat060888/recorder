@@ -15,6 +15,8 @@ public:
         std::string COMMUNICATION_MQTT_ROUTE_MODE;
         std::string COMMUNICATION_MQTT_LOGIN;
         std::string COMMUNICATION_MQTT_PASS;
+
+        int32_t RECORDING_QUANTUM_TIME_MILLISEC;
     };
 
     static ConfigReader & singleton(){

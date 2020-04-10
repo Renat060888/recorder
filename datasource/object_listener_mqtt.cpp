@@ -27,7 +27,7 @@ bool ObjectListenerMqtt::init( const SInitSettings & _settings ){
     }
 
     m_mqttClient.addObserver( this );
-    m_mqttClient.subscribe( 373, 0 );
+    m_mqttClient.subscribe( _settings.ctxId, _settings.missionId );
 
 
     return true;
@@ -37,12 +37,10 @@ void ObjectListenerMqtt::mqttClientEvent( const innotransfer::Package & package,
 
     switch( type ){
     case MqttClient::EPackageType::MOTION : {
-        SListenedTrajectory traj;
-        traj.ctxId = package.motiondata.contextID;
-        traj.missionId = 0;
-        traj.objId = package.motiondata.id;
-        traj.latDeg = package.motiondata.y;
-        traj.lonDeg = package.motiondata.x;
+        SListenedTrajectory traj( package.motiondata.contextID, 0, package.motiondata.id );
+        traj.data.latDeg = package.motiondata.y;
+        traj.data.lonDeg = package.motiondata.x;
+        traj.data.yawDeg = 0; // convert quaternion to euler angles
 #ifdef OBJREPR_LIBRARY_EXIST
         objrepr::Orientation orient;
         orient.setQuaternion( package.motiondata.i,
@@ -54,7 +52,7 @@ void ObjectListenerMqtt::mqttClientEvent( const innotransfer::Package & package,
         traj.yawDeg = orient.yaw();
 #endif
 
-        for( IListenedObjectObserver * observer : m_listenedObjectsObservers ){
+        for( IObjectListeningObserver * observer : m_listenedObjectsObservers ){
             observer->callbackObjectDetected( traj );
         }
         break;
@@ -78,7 +76,7 @@ void ObjectListenerMqtt::mqttClientEvent( const innotransfer::Package & package,
 
 void ObjectListenerMqtt::mqttClientBatchEvent( const innotransfer::BatchPackage & package, MqttClient::EPackageType type ){
 
-    // TODO: do ?
+    assert( false && "TODO: do ?" );
 }
 
 void ObjectListenerMqtt::runListenCycle(){
@@ -87,13 +85,16 @@ void ObjectListenerMqtt::runListenCycle(){
 }
 
 common_types::TContextId ObjectListenerMqtt::getListenedContextId(){
-
     return m_settings.ctxId;
 }
 
-void ObjectListenerMqtt::addObserver( common_types::IListenedObjectObserver * _observer ){
+common_types::TContextId ObjectListenerMqtt::getListenedMissionId(){
+    return m_settings.missionId;
+}
 
-    for( const IListenedObjectObserver * const observer : m_listenedObjectsObservers ){
+void ObjectListenerMqtt::addObserver( common_types::IObjectListeningObserver * _observer ){
+
+    for( const IObjectListeningObserver * const observer : m_listenedObjectsObservers ){
         if( observer == _observer ){
             return;
         }
@@ -102,7 +103,7 @@ void ObjectListenerMqtt::addObserver( common_types::IListenedObjectObserver * _o
     m_listenedObjectsObservers.push_back( _observer );
 }
 
-void ObjectListenerMqtt::removeObserver( common_types::IListenedObjectObserver * _observer ){
+void ObjectListenerMqtt::removeObserver( common_types::IObjectListeningObserver * _observer ){
 
     for( auto iter = m_listenedObjectsObservers.begin(); iter != m_listenedObjectsObservers.end(); ){
         if( (* iter) == _observer ){

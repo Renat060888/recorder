@@ -45,11 +45,10 @@ void ObjectListenerImitator::runListenCycle(){
                     // change obj state
 
                     // notify
-                    for( IListenedObjectObserver * observer : m_listenedObjectsObservers ){
+                    for( IObjectListeningObserver * observer : m_listenedObjectsObservers ){
                         observer->callbackObjectDetected( obj );
                     }
                 }
-
             }
         }
         else{
@@ -77,13 +76,16 @@ void ObjectListenerImitator::runListenCycle(){
 }
 
 common_types::TContextId ObjectListenerImitator::getListenedContextId(){
-
     return m_settings.ctxId;
 }
 
-void ObjectListenerImitator::addObserver( common_types::IListenedObjectObserver * _observer ){
+common_types::TMissionId ObjectListenerImitator::getListenedMissionId(){
+    return m_settings.missionId;
+}
 
-    for( const IListenedObjectObserver * const observer : m_listenedObjectsObservers ){
+void ObjectListenerImitator::addObserver( common_types::IObjectListeningObserver * _observer ){
+
+    for( const IObjectListeningObserver * const observer : m_listenedObjectsObservers ){
         if( observer == _observer ){
             return;
         }
@@ -92,7 +94,7 @@ void ObjectListenerImitator::addObserver( common_types::IListenedObjectObserver 
     m_listenedObjectsObservers.push_back( _observer );
 }
 
-void ObjectListenerImitator::removeObserver( common_types::IListenedObjectObserver * _observer ){
+void ObjectListenerImitator::removeObserver( common_types::IObjectListeningObserver * _observer ){
 
     for( auto iter = m_listenedObjectsObservers.begin(); iter != m_listenedObjectsObservers.end(); ){
         if( (* iter) == _observer ){

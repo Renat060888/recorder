@@ -23,18 +23,18 @@ static bool initSingletons( int _argc, char ** _argv, char ** _env ){
 
     // cmd line arguments
     ArgsParser::SInitSettings settings;
+    settings.commandConvertor = & UNIFIED_COMMAND_CONVERTOR;
     settings.argc = _argc;
     settings.argv = _argv;
     settings.printConfigExample = std::bind( & AConfigReader::getConfigExample, & CONFIG_READER );
-    settings.commandConvertor = & UNIFIED_COMMAND_CONVERTOR;
     if( ! ARGS_PARSER.init(settings) ){
         return false;
     }
 
     // configs
     ConfigReader::SIninSettings settings3;
-    settings3.mainConfigPath = ARGS_PARSER.getVal(EPlayerArguments::MAIN_CONFIG_PATH_FROM_CONSOLE);
     settings3.commandConvertor = & UNIFIED_COMMAND_CONVERTOR;
+    settings3.mainConfigPath = ARGS_PARSER.getVal(EPlayerArguments::MAIN_CONFIG_PATH_FROM_CONSOLE);
     settings3.env = _env;
     settings3.projectName = "recorder_agent";
     if( ! CONFIG_READER.init(settings3) ){
@@ -119,7 +119,7 @@ static bool executeShellCommand(){
             }
         }
     }
-    if( ! ARGS_PARSER.getVal(EPlayerArguments::SHELL_COMMAND_START_RECORDER_CONTROLLER).empty() ){
+    else if( ! ARGS_PARSER.getVal(EPlayerArguments::SHELL_COMMAND_START_RECORDER_CONTROLLER).empty() ){
 
         // launch controller
         {

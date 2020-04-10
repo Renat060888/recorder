@@ -7,16 +7,18 @@
 #include <microservice_common/common/ms_common_types.h>
 
 // ---------------------------------------------------------------------------
-// forwards
+// forwards ( outside of any namespace )
 // ---------------------------------------------------------------------------
 class SourceManagerFacade;
 class StorageEngineFacade;
 class SystemEnvironmentFacade;
 class CommunicationGatewayFacadeRecorder;
 
-
 namespace common_types{
 
+// ---------------------------------------------------------------------------
+// forwards ( inside namespace )
+// ---------------------------------------------------------------------------
 class IListenedObjectVisitor;
 
 // ---------------------------------------------------------------------------
@@ -47,34 +49,45 @@ class IListenedObjectVisitor;
 // ---------------------------------------------------------------------------
 // listened object
 struct SListenedObject {
+    SListenedObject( TContextId _ctxId, TMissionId _missionId, TObjectId _objId )
+        : ctxId(_ctxId)
+        , missionId(_missionId)
+        , objId(_objId)
+    {}
     virtual ~SListenedObject(){}
 
     virtual void accept( IListenedObjectVisitor * _visitor ) const = 0;
 
+    // TODO: highly likely a bad idea
     TContextId ctxId;
     TMissionId missionId;
     TObjectId objId;
 };
 
 struct SListenedTrajectory : SListenedObject {
-    SListenedTrajectory()
-    {}
+    SListenedTrajectory( TContextId _ctxId, TMissionId _missionId, TObjectId _objId )
+        : SListenedObject(_ctxId, _missionId, _objId){
+        data.ctxId = _ctxId;
+        data.missionId = _missionId;
+        data.objId = _objId;
+    }
 
     virtual void accept( IListenedObjectVisitor * _visitor ) const override;
 
-    double latDeg;
-    double lonDeg;
-    double yawDeg;
+    SPersistenceTrajectory data;
 };
 
 struct SListenedWeather : SListenedObject {
-    SListenedWeather()
-    {}
+    SListenedWeather( TContextId _ctxId, TMissionId _missionId, TObjectId _objId )
+        : SListenedObject(_ctxId, _missionId, _objId){
+        data.ctxId = _ctxId;
+        data.missionId = _missionId;
+        data.objId = _objId;
+    }
 
     virtual void accept( IListenedObjectVisitor * _visitor ) const override;
 
-    double windSpeed;
-    double humidity;
+    SPersistenceWeather data;
 };
 
 struct SOnceMoreObject : SListenedObject {
@@ -129,41 +142,26 @@ public:
 
     virtual PNetworkClient getUserCommunicator( const std::string & _uniqueId ) = 0;
 };
-
-class IUserDispatcherObserver {
-public:
-    virtual ~IUserDispatcherObserver(){}
-
-    virtual void callbackUserOnline( const common_types::TUserId & _id, bool _online ) = 0;
-};
-
-class IServiceUserAuthorization {
-public:
-    virtual ~IServiceUserAuthorization(){}
-
-    virtual bool isRegistered( const TUserId & _id ) = 0;
-    virtual void addObserver( IUserDispatcherObserver * _observer ) = 0;
-    virtual void removeObserver( IUserDispatcherObserver * _observer ) = 0;
-};
 //
 
 
 // source area
-class IListenedObjectObserver {
+class IObjectListeningObserver {
 public:
-    virtual ~IListenedObjectObserver(){}
+    virtual ~IObjectListeningObserver(){}
 
     virtual void callbackObjectDetected( const SListenedObject & _obj ) = 0;
 };
 
-class IServiceObjectListener {
+class IObjectListeningService {
 public:
-    virtual ~IServiceObjectListener(){}
+    virtual ~IObjectListeningService(){}
 
-    virtual void addObserver( IListenedObjectObserver * _observer ) = 0;
-    virtual void removeObserver( IListenedObjectObserver * _observer ) = 0;
+    virtual void addObserver( IObjectListeningObserver * _observer ) = 0;
+    virtual void removeObserver( IObjectListeningObserver * _observer ) = 0;
     virtual void runListenCycle() = 0;
     virtual TContextId getListenedContextId() = 0;
+    virtual TMissionId getListenedMissionId() = 0;
 };
 
 
@@ -184,7 +182,6 @@ struct SIncomingCommandServices : SIncomingCommandGlobalServices {
     CommunicationGatewayFacadeRecorder * communicationGateway;
     std::function<void()> signalShutdownServer;
 };
-
 
 }
 

@@ -6,7 +6,7 @@
 
 #include "common/common_types.h"
 
-class SourceManagerFacade : public common_types::IServiceObjectListener, public common_types::IListenedObjectObserver
+class SourceManagerFacade : public common_types::IObjectListeningService, public common_types::IObjectListeningObserver
 {
 public:
     struct SServiceLocator {
@@ -27,14 +27,15 @@ public:
     bool startListenContext( const std::string & _ctxName );
     void stopListenContext( const std::string & _ctxName );
 
-    common_types::IServiceObjectListener * getServiceOfObjectListener();
+    common_types::IObjectListeningService * getServiceOfObjectListener();
 
 
 private:
-    virtual void addObserver( common_types::IListenedObjectObserver * _observer ) override;
-    virtual void removeObserver( common_types::IListenedObjectObserver * _observer ) override;
+    virtual void addObserver( common_types::IObjectListeningObserver * _observer ) override;
+    virtual void removeObserver( common_types::IObjectListeningObserver * _observer ) override;
     virtual void runListenCycle() override;
     virtual common_types::TContextId getListenedContextId() override;
+    virtual common_types::TMissionId getListenedMissionId() override;
 
     virtual void callbackObjectDetected( const common_types::SListenedObject & _obj ) override;
 
@@ -44,11 +45,11 @@ private:
 
     // data
     bool m_shutdownCalled;
-    std::vector<common_types::IListenedObjectObserver *> m_listenedObjectsObservers;
+    std::vector<common_types::IObjectListeningObserver *> m_listenedObjectsObservers;
 
 
     // service    
-    std::vector<common_types::IServiceObjectListener *> m_listeningServices;
+    std::vector<common_types::IObjectListeningService *> m_listeningServices;
     std::thread * m_trMaintenance;
     std::mutex m_muListeners;
 

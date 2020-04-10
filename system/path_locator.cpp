@@ -39,6 +39,8 @@ void PathLocator::removePreviousSessionSocketFiles(){
             boost::filesystem::remove( filePath );
         }
 
+        // TODO: solve this task
+
         // by pattern - analyzer
         {
             // by pattern

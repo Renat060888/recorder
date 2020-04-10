@@ -7,11 +7,11 @@
 #include "common/common_types.h"
 #include "context.h"
 
-class StorageEngineFacade : public common_types::IListenedObjectObserver
+class StorageEngineFacade : public common_types::IObjectListeningObserver
 {
 public:
     struct SServiceLocator {
-        common_types::IServiceObjectListener * serviceObjectListener;
+        common_types::IObjectListeningService * serviceObjectListener;
     };
 
     struct SInitSettings {

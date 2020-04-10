@@ -3,7 +3,7 @@
 
 #include "datasource/object_listener_objrepr.h"
 
-class RecorderController
+class RecorderController : public INetworkObserver
 {
 public:
     struct SInitSettings {
@@ -18,9 +18,16 @@ public:
 
 
 private:
+    virtual void callbackNetworkRequest( PEnvironmentRequest _request ) override;
 
+
+
+
+    // data
     ObjectListenerObjrepr m_worker;
 
+    // service
+    PNetworkClient m_network;
 
 };
 

@@ -14,18 +14,23 @@ void ObjectListenerObjrepr::runListenCycle(){
 
     assert( false && "TODO: do" );
 
-    // traverse on dirty objects in objrepr
+    // TODO:
+    // 1 traverse on dirty objects in objrepr
+    // 2 notify observers about this events
 
 }
 
 common_types::TContextId ObjectListenerObjrepr::getListenedContextId(){
-
     return m_settings.ctxId;
 }
 
-void ObjectListenerObjrepr::addObserver( common_types::IListenedObjectObserver * _observer ){
+common_types::TMissionId ObjectListenerObjrepr::getListenedMissionId(){
+    return m_settings.missionId;
+}
 
-    for( const IListenedObjectObserver * const observer : m_listenedObjectsObservers ){
+void ObjectListenerObjrepr::addObserver( common_types::IObjectListeningObserver * _observer ){
+
+    for( const IObjectListeningObserver * const observer : m_listenedObjectsObservers ){
         if( observer == _observer ){
             return;
         }
@@ -34,7 +39,7 @@ void ObjectListenerObjrepr::addObserver( common_types::IListenedObjectObserver *
     m_listenedObjectsObservers.push_back( _observer );
 }
 
-void ObjectListenerObjrepr::removeObserver( common_types::IListenedObjectObserver * _observer ){
+void ObjectListenerObjrepr::removeObserver( common_types::IObjectListeningObserver * _observer ){
 
     for( auto iter = m_listenedObjectsObservers.begin(); iter != m_listenedObjectsObservers.end(); ){
         if( (* iter) == _observer ){
@@ -46,3 +51,8 @@ void ObjectListenerObjrepr::removeObserver( common_types::IListenedObjectObserve
         }
     }
 }
+
+
+
+
+
