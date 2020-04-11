@@ -11,7 +11,7 @@ class StorageEngineFacade : public common_types::IObjectListeningObserver
 {
 public:
     struct SServiceLocator {
-        common_types::IObjectListeningService * serviceObjectListener;
+        common_types::IObjectListeningService * ObjectListeningService;
     };
 
     struct SInitSettings {

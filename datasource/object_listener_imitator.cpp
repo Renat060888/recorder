@@ -26,6 +26,14 @@ bool ObjectListenerImitator::init( const SInitSettings & _settings ){
 
 
 
+    SListenedTrajectory obj( _settings.ctxId, _settings.missionId, 123 );
+    obj.data.latDeg = 10.0f;
+    obj.data.latDeg = 55.0f;
+    obj.data.logicTime = 0;
+    m_objectImitations.push_back( obj );
+
+
+
     return true;
 }
 
@@ -38,11 +46,10 @@ void ObjectListenerImitator::runListenCycle(){
                 m_lastStepAtMillisec = common_utils::getCurrentTimeMillisec();
                 m_currentStepNum++;
 
-                // ...
-                VS_LOG_INFO << "step num: " << m_currentStepNum << endl;
-
                 for( SListenedTrajectory & obj : m_objectImitations ){
                     // change obj state
+                    obj.data.logicTime++;
+                    obj.data.astroTimeMillisec = common_utils::getCurrentTimeMillisec();
 
                     // notify
                     for( IObjectListeningObserver * observer : m_listenedObjectsObservers ){

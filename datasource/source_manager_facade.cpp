@@ -31,7 +31,7 @@ SourceManagerFacade::~SourceManagerFacade()
 
 bool SourceManagerFacade::init( const SInitSettings & _settings ){
 
-
+    m_settings = _settings;
 
 
 
@@ -91,6 +91,7 @@ bool SourceManagerFacade::startListenContext( const std::string & _ctxName ){
     // imitator ( also may be objrepr or mqtt )
     ObjectListenerImitator::SInitSettings settings2;
     settings2.ctxId = contextId;
+    settings2.missionId = 0;
 
     ObjectListenerImitator * listener = new ObjectListenerImitator();
     if( ! listener->init(settings2) ){
@@ -110,11 +111,12 @@ void SourceManagerFacade::stopListenContext( const std::string & _ctxName ){
 
     TContextId contextId = OBJREPR_BUS.getContextIdByName( _ctxName );
     contextId = 777;
+    TMissionId missionId = 111;
 
     m_muListeners.lock();
     for( auto iter = m_listeningServices.begin(); iter != m_listeningServices.end(); ){
         IObjectListeningService * listener = ( * iter );
-        if( listener->getListenedContextId() == contextId ){
+        if( listener->getListenedContextId() == contextId ){ // TODO: && listener->getListenedMissionId() == missionId
             delete listener;
             m_listeningServices.erase( iter );
             return;
@@ -126,7 +128,7 @@ void SourceManagerFacade::stopListenContext( const std::string & _ctxName ){
     m_muListeners.unlock();
 }
 
-common_types::IObjectListeningService * SourceManagerFacade::getServiceOfObjectListener(){
+common_types::IObjectListeningService * SourceManagerFacade::getServiceOfObjectListening(){
     return this;
 }
 

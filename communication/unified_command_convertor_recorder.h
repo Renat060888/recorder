@@ -1,5 +1,5 @@
-#ifndef UNIFIED_COMMAND_CONVERTOR_DSS_H
-#define UNIFIED_COMMAND_CONVERTOR_DSS_H
+#ifndef UNIFIED_COMMAND_CONVERTOR_RECORDER_H
+#define UNIFIED_COMMAND_CONVERTOR_RECORDER_H
 
 #include <microservice_common/communication/unified_command_convertor.h>
 
@@ -28,4 +28,4 @@ private:
 };
 #define UNIFIED_COMMAND_CONVERTOR UnifiedCommandConvertorRecorder::singleton()
 
-#endif // UNIFIED_COMMAND_CONVERTOR_DSS_H
+#endif // UNIFIED_COMMAND_CONVERTOR_RECORDER_H

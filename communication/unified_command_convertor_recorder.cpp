@@ -37,11 +37,13 @@ std::string UnifiedCommandConvertorRecorder::getCommandFromConfigFile( const std
 
     // create unified command
     const string ctxName = CONFIG_READER.setParameterNew<std::string>( config, "ctx_name", string("") );
+    const string missionName = CONFIG_READER.setParameterNew<std::string>( config, "mission_name", string("") );
 
     boost::property_tree::ptree unifiedCommand;
     unifiedCommand.add( "cmd_type", "service" );
     unifiedCommand.add( "cmd_name", "context_listen_start" );
     unifiedCommand.add( "ctx_name", ctxName );
+    unifiedCommand.add( "mission_name", missionName );
 
     ostringstream oss;
     boost::property_tree::json_parser::write_json( oss, unifiedCommand );

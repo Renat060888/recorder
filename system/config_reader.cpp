@@ -48,6 +48,9 @@ bool ConfigReader::parse( const std::string & _content ){
     m_parameters.COMMUNICATION_MQTT_PASS = setParameterNew<std::string>( mqttClient, "pass", string("mqpass") );
     m_parameters.COMMUNICATION_MQTT_ROUTE_MODE = setParameterNew<std::string>( mqttClient, "route_mode", string("multicast") );
 
+    boost::property_tree::ptree etherListening = config.get_child("ether_listening");
+    m_parameters.RECORDING_QUANTUM_TIME_MILLISEC = setParameterNew<int32_t>( etherListening, "quantum_time_millisec", 1000 );
+
     return true;
 }
 

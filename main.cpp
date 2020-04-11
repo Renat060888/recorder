@@ -1,5 +1,5 @@
 
-#define RUN_TESTS
+//#define RUN_TESTS
 
 #ifdef RUN_TESTS
 #include <microservice_common/unit_tests/storage_tests.h>
@@ -34,7 +34,7 @@ static bool initSingletons( int _argc, char ** _argv, char ** _env ){
     // configs
     ConfigReader::SIninSettings settings3;
     settings3.commandConvertor = & UNIFIED_COMMAND_CONVERTOR;
-    settings3.mainConfigPath = ARGS_PARSER.getVal(EPlayerArguments::MAIN_CONFIG_PATH_FROM_CONSOLE);
+    settings3.mainConfigPath = ARGS_PARSER.getVal(EPlayerArguments::MAIN_CONFIG_PATH);
     settings3.env = _env;
     settings3.projectName = "recorder_agent";
     if( ! CONFIG_READER.init(settings3) ){
@@ -42,7 +42,7 @@ static bool initSingletons( int _argc, char ** _argv, char ** _env ){
     }
 
     // logger
-    const string loggerName = ( ! ARGS_PARSER.getVal(EPlayerArguments::SHELL_COMMAND_START_RECORDER_AGENT).empty()
+    const string loggerName = ( ARGS_PARSER.isKeyExist(EPlayerArguments::SHELL_CMD_START_RECORDER_AGENT)
                                 ? "RecorderAgent" : "RecorderController" );
 
     logger_common::SInitSettings settings2;
@@ -85,10 +85,10 @@ static void parseResponse( const std::string & _msg ){
 
 static bool executeShellCommand(){
 
-    if( ! ARGS_PARSER.getVal(EPlayerArguments::SHELL_COMMAND_START_RECORDER_AGENT).empty() ){
+    if( ARGS_PARSER.isKeyExist(EPlayerArguments::SHELL_CMD_START_RECORDER_AGENT) ){
 
         // deamonize
-        if( ! ARGS_PARSER.getVal(EPlayerArguments::AS_DAEMON).empty() ){
+        if( ARGS_PARSER.isKeyExist(EPlayerArguments::AS_DAEMON) ){
             if( ! Daemonizator::turnIntoDaemon() ){
                 return false;
             }
@@ -119,7 +119,7 @@ static bool executeShellCommand(){
             }
         }
     }
-    else if( ! ARGS_PARSER.getVal(EPlayerArguments::SHELL_COMMAND_START_RECORDER_CONTROLLER).empty() ){
+    else if( ARGS_PARSER.isKeyExist(EPlayerArguments::SHELL_CMD_START_RECORDER_CONTROLLER) ){
 
         // launch controller
         {
@@ -133,7 +133,7 @@ static bool executeShellCommand(){
             }
         }
     }
-    else if( ! ARGS_PARSER.getVal(EPlayerArguments::SHELL_COMMAND_TO_RECORDER).empty() ){
+    else if( ARGS_PARSER.isKeyExist(EPlayerArguments::SHELL_CMD_TO_RECORDER) ){
 
         // reinit logger for client side
         logger_common::SInitSettings settings;
@@ -152,7 +152,7 @@ static bool executeShellCommand(){
         }
 
         // send message to server
-        const string message =  ARGS_PARSER.getVal(EPlayerArguments::SHELL_COMMAND_TO_RECORDER);
+        const string message =  ARGS_PARSER.getVal(EPlayerArguments::SHELL_CMD_TO_RECORDER);
         const string response = shell.makeBlockedRequest( message );
         parseResponse( response );
     }

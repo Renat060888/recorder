@@ -11,6 +11,11 @@ class Context : public common_types::IListenedObjectVisitor
 {
 public:
     struct SInitSettings {
+        SInitSettings()
+            : ctxId(0)
+            , missionId(0)
+            , updateIntervalMilllisec(0)
+        {}
         common_types::TContextId ctxId;
         common_types::TMissionId missionId;
         int64_t updateIntervalMilllisec;
@@ -36,6 +41,8 @@ private:
     std::vector<common_types::SListenedTrajectory> m_accumulatedTrajObjects;
     std::vector<common_types::SListenedWeather> m_accumulatedWeatherObjects;
     common_types::TPersistenceSetId m_persId;
+    common_types::TSessionNum m_currentSessionNum;
+    common_types::TLogicStep m_currentLogicTime;
 
     // service
     DatabaseManagerBase * m_database;

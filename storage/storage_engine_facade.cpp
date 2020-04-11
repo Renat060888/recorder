@@ -23,7 +23,7 @@ StorageEngineFacade::~StorageEngineFacade()
 
 bool StorageEngineFacade::init( const SInitSettings & _settings ){
 
-    _settings.services.serviceObjectListener->addObserver( this );
+    _settings.services.ObjectListeningService->addObserver( this );
 
 
 

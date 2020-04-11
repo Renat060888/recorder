@@ -61,6 +61,7 @@ PCommand CommandFactory::createCommand( PEnvironmentRequest _request ){
         else if( "context_listen_start" == parsedJson.get<string>(common_vars::cmd::COMMAND_NAME) ){
             PCommandContextListenStart cmd1 = std::make_shared<CommandContextListenStart>( & m_commandServices );
             cmd1->m_contextName = parsedJson.get<string>(common_vars::cmd::CONTEXT_NAME);
+            cmd1->m_missionName = parsedJson.get<string>(common_vars::cmd::MISSION_NAME);
             cmd = cmd1;
         }
         else if( "context_listen_stop" == parsedJson.get<string>(common_vars::cmd::COMMAND_NAME) ){

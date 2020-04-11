@@ -82,7 +82,7 @@ bool RecorderAgent::init( const SInitSettings & _settings ){
     }
 
     StorageEngineFacade::SInitSettings settings3;
-    settings3.services.serviceObjectListener = m_sourceManager->getServiceOfObjectListener();
+    settings3.services.ObjectListeningService = m_sourceManager->getServiceOfObjectListening();
     if( ! m_storageEngine->init(settings3) ){
         return false;
     }

@@ -27,7 +27,7 @@ public:
     bool startListenContext( const std::string & _ctxName );
     void stopListenContext( const std::string & _ctxName );
 
-    common_types::IObjectListeningService * getServiceOfObjectListener();
+    common_types::IObjectListeningService * getServiceOfObjectListening();
 
 
 private:
@@ -45,6 +45,7 @@ private:
 
     // data
     bool m_shutdownCalled;
+    SInitSettings m_settings;
     std::vector<common_types::IObjectListeningObserver *> m_listenedObjectsObservers;
 
 
