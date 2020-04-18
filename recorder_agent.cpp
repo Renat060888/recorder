@@ -22,7 +22,7 @@ RecorderAgent::RecorderAgent()
     , m_shutdownCalled(false)
 {
     // system facility
-    m_systemEnvironment = new SystemEnvironmentFacade();
+    m_systemEnvironment = new SystemEnvironmentFacadeRecorder();
 
     // I data generation
     m_sourceManager = new SourceManagerFacade();
@@ -55,8 +55,7 @@ bool RecorderAgent::init( const SInitSettings & _settings ){
     const SystemMonitor::STotalInfo info = SYSTEM_MONITOR.getTotalSnapshot();
     SYSTEM_MONITOR.printOnScreen( info );
 
-    SystemEnvironmentFacade::SInitSettings settings0;
-    settings0.services;
+    SystemEnvironmentFacadeRecorder::SInitSettings settings0;
     settings0.databaseHost = CONFIG_PARAMS.baseParams.MONGO_DB_ADDRESS;
     settings0.databaseName = CONFIG_PARAMS.baseParams.MONGO_DB_NAME;
     settings0.restoreSystemAfterInterrupt = CONFIG_PARAMS.baseParams.SYSTEM_RESTORE_INTERRUPTED_SESSION;

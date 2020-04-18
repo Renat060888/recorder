@@ -5,13 +5,14 @@
 #include <functional>
 
 #include <microservice_common/common/ms_common_types.h>
+#include <microservice_common/communication/network_interface.h>
 
 // ---------------------------------------------------------------------------
 // forwards ( outside of any namespace )
 // ---------------------------------------------------------------------------
 class SourceManagerFacade;
 class StorageEngineFacade;
-class SystemEnvironmentFacade;
+class SystemEnvironmentFacadeRecorder;
 class CommunicationGatewayFacadeRecorder;
 
 namespace common_types{
@@ -121,13 +122,6 @@ public:
 // ---------------------------------------------------------------------------
 
 //
-class IContextService {
-public:
-    virtual ~IContextService(){}
-
-    virtual bool open( int _contextId ) = 0;
-    virtual bool close( int _contextId ) = 0;
-};
 
 class IServiceInternalCommunication {
 public:
@@ -176,7 +170,7 @@ struct SIncomingCommandServices : SIncomingCommandGlobalServices {
         , communicationGateway(nullptr)
     {}
 
-    SystemEnvironmentFacade * systemEnvironment;
+    SystemEnvironmentFacadeRecorder * systemEnvironment;
     SourceManagerFacade * sourceManager;
     StorageEngineFacade * storageEngine;
     CommunicationGatewayFacadeRecorder * communicationGateway;

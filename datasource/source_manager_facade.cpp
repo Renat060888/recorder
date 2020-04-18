@@ -4,8 +4,8 @@
 #endif
 
 #include <microservice_common/system/logger.h>
-#include <microservice_common/system/objrepr_bus.h>
 
+#include "system/objrepr_bus_recorder.h"
 #include "system/config_reader.h"
 #include "source_manager_facade.h"
 #include "object_listener_imitator.h"

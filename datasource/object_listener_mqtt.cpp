@@ -1,4 +1,5 @@
 
+#include <objrepr/reprServer.h>
 #include <microservice_common/system/logger.h>
 
 #include "object_listener_mqtt.h"
@@ -49,7 +50,7 @@ void ObjectListenerMqtt::mqttClientEvent( const innotransfer::Package & package,
                               package.motiondata.w,
                               objrepr::GeoCoord(package.motiondata.x, package.motiondata.y, package.motiondata.z),
                               4876 );
-        traj.yawDeg = orient.yaw();
+        traj.data.yawDeg = orient.yaw();
 #endif
 
         for( IObjectListeningObserver * observer : m_listenedObjectsObservers ){

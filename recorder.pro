@@ -9,11 +9,12 @@ CONFIG -= qt
 
 QMAKE_CXXFLAGS += -Wno-unused-parameter
 QMAKE_CXXFLAGS += -Wno-unused-variable
-q
+
 # TODO: add defines to logger, system monitor, restbed webserver, database, etc...
 DEFINES += \
-    SWITCH_LOGGER_SIMPLE \
-#    OBJREPR_LIBRARY_EXIST \
+#    SWITCH_LOGGER_SIMPLE \
+    SWITCH_LOGGER_ASTRA \
+    OBJREPR_LIBRARY_EXIST \
 #    RUN_UNIT_TESTS \
 
 # NOTE: paths for dev environment ( all projects sources in one dir )
@@ -65,7 +66,9 @@ SOURCES += main.cpp \
     storage/context.cpp \
     datasource/mqtt_client.cpp \
     common/common_types.cpp \
-    datasource/source_manager_facade.cpp
+    datasource/source_manager_facade.cpp \
+    system/system_environment_facade_recorder.cpp \
+    system/objrepr_bus_recorder.cpp
 
 HEADERS += \
     communication/commands/cmd_context_listen_start.h \
@@ -93,4 +96,6 @@ HEADERS += \
     analyze/dummy.h \
     storage/context.h \
     datasource/mqtt_client.h \
-    datasource/source_manager_facade.h
+    datasource/source_manager_facade.h \
+    system/system_environment_facade_recorder.h \
+    system/objrepr_bus_recorder.h
