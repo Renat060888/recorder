@@ -1,5 +1,7 @@
-
+#ifdef OBJREPR_LIBRARY_EXIST
 #include <objrepr/reprServer.h>
+#endif
+
 #include <microservice_common/system/logger.h>
 
 #include "object_listener_mqtt.h"
