@@ -3,6 +3,7 @@
 
 #include <thread>
 #include <mutex>
+#include <unordered_map>
 
 #include "common/common_types.h"
 
@@ -18,10 +19,16 @@ public:
         SServiceLocator services;
     };
 
+    struct SState {
+        SInitSettings m_settings;
+        std::string lastError;
+    };
+
     SourceManagerFacade();
     ~SourceManagerFacade();
 
     bool init( const SInitSettings & _settings );
+    const SState & getState(){ return m_state; }
     void shutdown();
 
     bool startListenContext( const std::string & _ctxName );
@@ -44,13 +51,14 @@ private:
 
 
     // data
-    bool m_shutdownCalled;
-    SInitSettings m_settings;
+    SState m_state;
+    bool m_shutdownCalled;    
     std::vector<common_types::IObjectListeningObserver *> m_listenedObjectsObservers;
 
 
     // service    
     std::vector<common_types::IObjectListeningService *> m_listeningServices;
+    std::unordered_map<common_types::TContextId, common_types::IObjectListeningService *> m_listeningServicesByCtxId;
     std::thread * m_trMaintenance;
     std::mutex m_muListeners;
 

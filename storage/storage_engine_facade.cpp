@@ -95,7 +95,7 @@ void StorageEngineFacade::callbackObjectDetected( const common_types::SListenedO
         Context::SInitSettings settings;
         settings.ctxId = _obj.ctxId;
         settings.missionId = _obj.missionId;
-        settings.updateIntervalMilllisec = CONFIG_PARAMS.RECORDING_QUANTUM_TIME_MILLISEC;
+        settings.quantumIntervalMilllisec = CONFIG_PARAMS.RECORDING_QUANTUM_TIME_MILLISEC;
 
         PContext ctx = std::make_shared<Context>();
         if( ctx->init( settings ) ){

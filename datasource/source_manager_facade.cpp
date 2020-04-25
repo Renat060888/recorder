@@ -31,7 +31,7 @@ SourceManagerFacade::~SourceManagerFacade()
 
 bool SourceManagerFacade::init( const SInitSettings & _settings ){
 
-    m_settings = _settings;
+    m_state.m_settings = _settings;
 
 
 
@@ -88,6 +88,13 @@ bool SourceManagerFacade::startListenContext( const std::string & _ctxName ){
     TContextId contextId = OBJREPR_BUS.getContextIdByName( _ctxName );
     contextId = 777;
 
+    // check for duplicate
+    auto iter = m_listeningServicesByCtxId.find( contextId );
+    if( iter != m_listeningServicesByCtxId.end() ){
+        m_state.lastError = "ctx alredy listening";
+        return false;
+    }
+
     // imitator ( also may be objrepr or mqtt )
     ObjectListenerImitator::SInitSettings settings2;
     settings2.ctxId = contextId;
@@ -102,6 +109,7 @@ bool SourceManagerFacade::startListenContext( const std::string & _ctxName ){
 
     m_muListeners.lock();
     m_listeningServices.push_back( listener );
+    m_listeningServicesByCtxId.insert( {contextId, listener} );
     m_muListeners.unlock();
 
     return true;

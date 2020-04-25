@@ -14,11 +14,11 @@ public:
         SInitSettings()
             : ctxId(0)
             , missionId(0)
-            , updateIntervalMilllisec(0)
+            , quantumIntervalMilllisec(0)
         {}
         common_types::TContextId ctxId;
         common_types::TMissionId missionId;
-        int64_t updateIntervalMilllisec;
+        int64_t quantumIntervalMilllisec;
     };
 
     Context();

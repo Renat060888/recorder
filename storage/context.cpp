@@ -36,7 +36,7 @@ Context::Context()
 bool Context::init( const SInitSettings & _settings ){
 
     // TODO: temporary input validation
-    assert( _settings.ctxId > 0 && _settings.missionId >= 0 && _settings.updateIntervalMilllisec > 0 );
+    assert( _settings.ctxId > 0 && _settings.missionId >= 0 && _settings.quantumIntervalMilllisec > 0 );
 
     m_settings = _settings;
 
@@ -90,7 +90,7 @@ void Context::createNewMetadata( const SInitSettings & _settings ){
     rawMetadata.missionId = _settings.missionId;
     rawMetadata.lastRecordedSession = 1;
     rawMetadata.sourceType = common_types::EPersistenceSourceType::AUTONOMOUS_RECORDER;
-    rawMetadata.timeStepIntervalMillisec = _settings.updateIntervalMilllisec;
+    rawMetadata.timeStepIntervalMillisec = _settings.quantumIntervalMilllisec;
 
     m_persId = m_database->writePersistenceSetMetadata( rawMetadata );
     assert( m_persId != common_types::SPersistenceMetadataDescr::INVALID_PERSISTENCE_ID );
@@ -103,7 +103,7 @@ void Context::createNewMetadata( const SInitSettings & _settings ){
 void Context::runSystemClock(){
 
     // dump accumulated objects every N milliseconds
-    if( (common_utils::getCurrentTimeMillisec() - m_lastDumpAtMillisec) > m_settings.updateIntervalMilllisec ){
+    if( (common_utils::getCurrentTimeMillisec() - m_lastDumpAtMillisec) > m_settings.quantumIntervalMilllisec ){
         m_lastDumpAtMillisec = common_utils::getCurrentTimeMillisec();
 
         // increase time despite on object presence
@@ -118,7 +118,7 @@ void Context::runSystemClock(){
         vector<common_types::SPersistenceTrajectory> data;
         data.resize( m_accumulatedTrajObjects.size() );
 
-        for( int i = 0; i < m_accumulatedTrajObjects.size(); i++ ){
+        for( size_t i = 0; i < m_accumulatedTrajObjects.size(); i++ ){
             const common_types::SListenedTrajectory & traj = m_accumulatedTrajObjects[ i ];
             data[ i ] = traj.data;
             data[ i ].sessionNum = m_currentSessionNum;
