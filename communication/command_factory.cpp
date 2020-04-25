@@ -24,11 +24,13 @@ PCommand CommandFactory::createCommand( PEnvironmentRequest _request ){
 
 //        VS_LOG_DBG << PRINT_HEADER << common_utils::getCurrentDateTimeStr() << " incoming msg [" << _request->getIncomingMessage() << "]" << endl;
 
+    // check
     if( _request->getIncomingMessage().empty() ){
         sendFailToExternal( _request, "I don't see the command (-_-)" );
         return nullptr;
     }
 
+    // parse
     boost::property_tree::ptree parsedJson;
     try{
         istringstream contentStream( _request->getIncomingMessage() );
