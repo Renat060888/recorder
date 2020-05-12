@@ -61,6 +61,8 @@ bool Context::init( const SInitSettings & _settings ){
         if( ! meta.persistenceFromRaw.empty() ){
             common_types::SPersistenceMetadataRaw persistenceFromRaw = meta.persistenceFromRaw.front();
 
+            // TODO: check quantum interval equality between previous recording and this one
+
             persistenceFromRaw.lastRecordedSession++;
 
             m_persId = m_database->writePersistenceSetMetadata( persistenceFromRaw );
@@ -144,18 +146,13 @@ void Context::visit( const common_types::SListenedTrajectory * _listenObj ){
     m_muAccumulatedObjects.lock();
     m_accumulatedTrajObjects.push_back( (* _listenObj) );
     m_muAccumulatedObjects.unlock();
-
 }
 
 void Context::visit( const common_types::SListenedWeather * _listenObj ){
 
     VS_LOG_INFO << "listen weather object: " << _listenObj->objId << endl;
 
-
-    // TODO: accumulate detected objects
-
-
-
+    // TODO: accumulate detected weather objects
 }
 
 

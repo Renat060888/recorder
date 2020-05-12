@@ -7,7 +7,7 @@
 using namespace std;
 using namespace common_types;
 
-static constexpr int64_t ACTIVITY_INTERVAL_MILLISEC = 1000 * 60 * 1;
+static constexpr int64_t PAUSE_ACTIVITY_INTERVAL_MILLISEC = 1000 * 60 * 1;
 static constexpr int64_t STEP_INTERVAL_MILLISEC = 1000;
 static constexpr int32_t STEPS_LIMIT = 20;
 
@@ -69,7 +69,7 @@ void ObjectListenerImitator::runListenCycle(){
     // or pause activity
     else{
         // pause up to N minutes
-        if( (common_utils::getCurrentTimeMillisec() - m_lastActivityAtMillisec) < ACTIVITY_INTERVAL_MILLISEC ){
+        if( (common_utils::getCurrentTimeMillisec() - m_lastActivityAtMillisec) < PAUSE_ACTIVITY_INTERVAL_MILLISEC ){
             return;
         }
         // let makes steps again

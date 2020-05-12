@@ -44,7 +44,7 @@ void StorageEngineFacade::shutdown(){
 
         VS_LOG_INFO << PRINT_HEADER << " begin shutdown" << endl;
 
-
+        common_utils::threadShutdown( m_trMaintenance );
 
 
 
@@ -59,10 +59,9 @@ void StorageEngineFacade::threadMaintenance(){
 
     VS_LOG_INFO << PRINT_HEADER << " start a maintenance THREAD" << endl;
 
-    constexpr int listenIntervalMillisec = 10;
+    constexpr int LISTEN_INTERVAL_MILLISEC = 10;
 
     while( ! m_shutdownCalled ){
-
         m_muContexts.lock();
         for( PContext & ctx : m_contexts ){
             ctx->runSystemClock();
@@ -75,7 +74,7 @@ void StorageEngineFacade::threadMaintenance(){
 
 
 
-        this_thread::sleep_for( chrono::milliseconds(listenIntervalMillisec) );
+        this_thread::sleep_for( chrono::milliseconds(LISTEN_INTERVAL_MILLISEC) );
     }
 
     VS_LOG_INFO << PRINT_HEADER << " maintenance THREAD is stopped" << endl;
